@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Available Travel Options</h2>
+<form method="get" class="mb-3">
+Type: <input name="type" value="{{request.GET.type}}">
+Source: <input name="source" value="{{request.GET.source}}">
+Destination: <input name="destination" value="{{request.GET.destination}}">
+Date: <input type="date" name="date" value="{{request.GET.date}}">
+<button class="btn btn-primary">Filter</button>
+</form>
+<table class="table table-bordered">
+<tr><th>ID</th><th>Type</th><th>Source</th><th>Destination</th><th>Date</th><th>Price</th><th>Seats</th><th>Action</th></tr>
+{% for travel in travel_options %}
+<tr>
+<td>{{ travel.travel_id }}</td>
+<td>{{ travel.type }}</td>
+<td>{{ travel.source }}</td>
+<td>{{ travel.destination }}</td>
+<td>{{ travel.departure_datetime }}</td>
+<td>{{ travel.price }}</td>
+<td>{{ travel.available_seats }}</td>
+<td><a class="btn btn-success btn-sm" href="{% url 'book_travel' travel.travel_id %}">Book</a></td>
+</tr>
+{% empty %}<tr><td colspan="8">No options available</td></tr>{% endfor %}
+</table>
+{% endblock %}

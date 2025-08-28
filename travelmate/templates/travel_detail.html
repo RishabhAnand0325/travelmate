@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h3>{{ travel.type }}: {{ travel.source }} → {{ travel.destination }}</h3>
+        <p><strong>Travel ID:</strong> {{ travel.travel_id }}</p>
+        <p><strong>Departure:</strong> {{ travel.departure_datetime|date:"D, M j, Y g:i A" }}</p>
+        <p><strong>Price:</strong> ₹ {{ travel.price }}</p>
+        <p><strong>Available seats:</strong> {{ travel.available_seats }}</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4>Book now</h4>
+        <form method="post" action="{% url 'create_booking' travel.pk %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          {% if user.is_authenticated %}
+            <button class="btn btn-primary" {% if travel.available_seats <= 0 %}disabled{% endif %}>Confirm Booking</button>
+          {% else %}
+            <a class="btn btn-outline-primary" href="{% url 'login' %}?next={% url 'travel_detail' travel.pk %}">Login to book</a>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

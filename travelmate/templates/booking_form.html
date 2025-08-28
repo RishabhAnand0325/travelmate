@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Book {{ travel }}</h2>
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+<form method="post">{% csrf_token %}
+<label>Number of seats:</label>
+<input type="number" name="number_of_seats" value="1" min="1" max="{{ travel.available_seats }}" class="form-control mb-2">
+<button class="btn btn-primary">Confirm Booking</button>
+</form>
+{% endblock %}
