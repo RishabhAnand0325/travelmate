@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: travelmate
+    env: python
+    buildCommand: |
+      pip install -r travelmate/requirements.txt
+      cd travelmate && python manage.py migrate && python manage.py collectstatic --noinput
+    startCommand: gunicorn travelmate.wsgi:application --chdir travelmate
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "travelmate.onrender.com"
